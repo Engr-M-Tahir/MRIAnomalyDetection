@@ -1,82 +1,82 @@
 # Autoencoder-Based Anomaly Detection in Brain MRI Scans
- Project Overview
+ # Project Overview
 
 This project implements an unsupervised anomaly detection system using convolutional autoencoders to identify chronic brain infarcts and tumor-like anomalies in MRI scans. Inspired by the work of van Hespen et al. (2021), our approach trains the autoencoder only on healthy brain MRI scans. When tested with abnormal scans, higher reconstruction errors indicate potential infarcts or other anomalies.
 
 The goal is to support radiologists by providing an automated tool that flags suspicious regions, reducing human error and improving early diagnosis in neurological disorders.
 
- Key Features
+ # Key Features
 
-Autoencoder Architecture — Convolutional encoder-decoder structure with symmetric layers for reconstruction.
+* Autoencoder Architecture — Convolutional encoder-decoder structure with symmetric layers for reconstruction.
 
-Unsupervised Learning — Model trained only on healthy brain scans, making it effective for anomaly detection without labeled infarct data.
+* Unsupervised Learning — Model trained only on healthy brain scans, making it effective for anomaly detection without labeled infarct data.
 
-Pixel-wise Anomaly Scoring — Reconstruction error (MSE) is computed for each pixel to localize anomalies.
+* Pixel-wise Anomaly Scoring — Reconstruction error (MSE) is computed for each pixel to localize anomalies.
 
-Dynamic Thresholding — Anomaly threshold calculated as
+* Dynamic Thresholding — Anomaly threshold calculated as
 
-Threshold=μ(healthy scores)+1×σ(healthy scores)
+* Threshold=μ(healthy scores)+1×σ(healthy scores)
 
-Evaluation Metrics — Precision, Recall, F1-Score, and Confusion Matrix.
+* Evaluation Metrics — Precision, Recall, F1-Score, and Confusion Matrix.
 
-Visualization — Heatmaps highlight anomalous regions in test MRI scans.
+* Visualization — Heatmaps highlight anomalous regions in test MRI scans.
 
- Methodology
+ # Methodology
 1. Dataset
 
 Source: Brain MRI Images for Brain Tumor Detection – Kaggle
 
 Size: 253 images (healthy + abnormal).
 
-Preprocessing:
+# Preprocessing:
 
-Grayscale conversion
+* Grayscale conversion
 
-Resizing to 128×128 pixels
+* Resizing to 128×128 pixels
 
-Normalization
+* Normalization
 
 2. Model Architecture
 
-Input: 1-channel MRI (128×128)
+* Input: 1-channel MRI (128×128)
 
 Encoder:
 
-Conv2d (1→32) → ReLU
+* Conv2d (1→32) → ReLU
 
-Conv2d (32→64) → ReLU
+* Conv2d (32→64) → ReLU
 
-Conv2d (64→128) → ReLU
+* Conv2d (64→128) → ReLU
 
-Flatten → Linear → Latent Space (256 neurons)
+* Flatten → Linear → Latent Space (256 neurons)
 
 Decoder:
 
-Linear → Reshape
+* Linear → Reshape
 
-ConvTranspose2d (128→64) → ReLU
+* ConvTranspose2d (128→64) → ReLU
 
-ConvTranspose2d (64→32) → ReLU
+* ConvTranspose2d (64→32) → ReLU
 
-ConvTranspose2d (32→1) → Sigmoid
+* ConvTranspose2d (32→1) → Sigmoid
 
-Loss Function: Mean Squared Error (MSE)
+* Loss Function: Mean Squared Error (MSE)
 
 3. Training
 
-Framework: PyTorch
+* Framework: PyTorch
 
-Optimizer: Adam (lr = 0.001)
+* Optimizer: Adam (lr = 0.001)
 
-Batch size: 32
+* Batch size: 32
 
-Epochs: 50
+* Epochs: 50
 
-Early Stopping: Enabled
+* Early Stopping: Enabled
 
- Results
+ # Results
 
-Confusion Matrix:
+* Confusion Matrix:
 
 |                 | Predicted No Tumor | Predicted Tumor |
 | --------------- | ------------------ | --------------- |
@@ -86,51 +86,50 @@ Confusion Matrix:
 
 Metrics:
 
-Precision: 0.92
+* Precision: 0.92
 
-Recall: 1.0
+* Recall: 1.0
 
-F1-Score: 0.96
+* F1-Score: 0.96
 
 Observations:
 
-Clear heatmap-based localization of anomalous regions.
+* Clear heatmap-based localization of anomalous regions.
 
-Small/low-contrast infarcts remain challenging.
+* Small/low-contrast infarcts remain challenging.
 
-False positives occasionally triggered by natural brain structures.
+* False positives occasionally triggered by natural brain structures.
 
-⚠️ Limitations
+ # Limitations
 
-Operates on 2D slices only; no volumetric context.
+* Operates on 2D slices only; no volumetric context.
 
-Threshold selection is empirical, may vary across datasets.
+* Threshold selection is empirical, may vary across datasets.
 
-Domain shift across scanners or acquisition protocols can impact performance.
+* Domain shift across scanners or acquisition protocols can impact performance.
 
-🔮 Future Work
+ # Future Work
 
-Extend to 2.5D or 3D autoencoders for richer spatial understanding.
+* Extend to 2.5D or 3D autoencoders for richer spatial understanding.
 
-Explore semi-supervised learning to leverage limited labeled infarct data.
+* Explore semi-supervised learning to leverage limited labeled infarct data.
 
-Apply morphological post-processing to reduce false positives.
+* Apply morphological post-processing to reduce false positives.
 
-Investigate transfer learning for generalization across diverse MRI protocols.
+* Investigate transfer learning for generalization across diverse MRI protocols.
 
-🛠️ Tech Stack
+#  Tech Stack
 
-Language: Python 3.x
+* Language: Python 3.x
 
-Libraries: PyTorch, NumPy, Matplotlib, OpenCV, Scikit-learn
+* Libraries: PyTorch, NumPy, Matplotlib, OpenCV, Scikit-learn
 
-Environment: Jupyter Notebook / Google Colab
+* Environment: Jupyter Notebook / Google Colab
 
-📚 References
+# References
 
-Van Hespen, K.M., et al. (2021). An anomaly detection approach to identify chronic brain infarcts on MRI. Scientific Reports.
+* Van Hespen, K.M., et al. (2021). An anomaly detection approach to identify chronic brain infarcts on MRI. Scientific Reports.
 
-Kaggle Dataset — Brain MRI Images for Brain Tumor Detection
-.
+* Kaggle Dataset — Brain MRI Images for Brain Tumor Detection
 
-Chandola, V., Banerjee, A., & Kumar, V. (2009). Anomaly detection: A survey. ACM Computing Surveys.
+* Chandola, V., Banerjee, A., & Kumar, V. (2009). Anomaly detection: A survey. ACM Computing Surveys.
